@@ -14,7 +14,7 @@ spec:
         spec:
             containers:
                 - name: api
-                  image: my-go-backend:v2
+                  image: my-go-backend:v3
                   imagePullPolicy: Never
                   ports:
                       - containerPort: 8080
@@ -28,4 +28,4 @@ spec:
                       - name: S3_BUCKET_NAME
                         value: "app-data-bucket"
                       - name: AWS_ENDPOINT
-                        value: "http://host.docker.internal:4566"
+                        value: "http://localstack:4566"

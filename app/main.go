@@ -51,8 +51,6 @@ func getEnvOrDefault(key, defaultVal string) string {
 }
 
 func newS3Client(cfg Config) *s3.Client {
-	customEndpoint := cfg.S3Endpoint
-
 	awsCfg, err := config.LoadDefaultConfig(context.Background(),
 		config.WithRegion(cfg.AWSRegion),
 		config.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(
@@ -65,13 +63,17 @@ func newS3Client(cfg Config) *s3.Client {
 		log.Fatalf("Failed to load AWS config: %v", err)
 	}
 
-	return s3.NewFromConfig(awsCfg, func(o *s3.Options) {
-		if customEndpoint != "" {
-			o.BaseEndpoint = aws.String(customEndpoint)
-			// CRITICAL FIX: Tell LocalStack to use Path-Style
+	optFns := []func(*s3.Options){}
+	if cfg.S3Endpoint != "" {
+		optFns = append(optFns, func(o *s3.Options) {
 			o.UsePathStyle = true
-		}
-	})
+			o.EndpointResolver = s3.EndpointResolverFunc(func(region string, options s3.EndpointResolverOptions) (aws.Endpoint, error) {
+				return aws.Endpoint{URL: cfg.S3Endpoint}, nil
+			})
+		})
+	}
+
+	return s3.NewFromConfig(awsCfg, optFns...)
 }
 
 // uploadHandler handles POST /upload
