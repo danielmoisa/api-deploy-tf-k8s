@@ -51,7 +51,7 @@ func getEnvOrDefault(key, defaultVal string) string {
 }
 
 func newS3Client(cfg Config) *s3.Client {
-	customEndpoint := os.Getenv("AWS_ENDPOINT")
+	customEndpoint := cfg.S3Endpoint
 
 	awsCfg, err := config.LoadDefaultConfig(context.Background(),
 		config.WithRegion(cfg.AWSRegion),
