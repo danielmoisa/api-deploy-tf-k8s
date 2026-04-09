@@ -6,7 +6,7 @@ metadata:
 spec:
     project: default
     source:
-        repoURL: https://github.com/danielmoisa/api-deploy-tf-k8s # your repo URL
+        repoURL: https://github.com/danielmoisa/api-deploy-tf-k8s
         targetRevision: main
         path: k8s # path to your k8s manifests
     destination:
