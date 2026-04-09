@@ -14,7 +14,7 @@ spec:
         spec:
             containers:
                 - name: api
-                  image: my-go-backend:v3
+                  image: my-go-backend:v4
                   imagePullPolicy: Never
                   ports:
                       - containerPort: 8080
