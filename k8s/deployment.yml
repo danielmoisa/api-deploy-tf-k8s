@@ -47,5 +47,3 @@ spec:
                             configMapKeyRef:
                                 name: backend-config
                                 key: S3_ENDPOINT
-                      - name: AWS_ENDPOINT
-                        value: "http://localstack:4566"
