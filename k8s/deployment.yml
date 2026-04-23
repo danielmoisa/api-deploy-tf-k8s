@@ -19,17 +19,7 @@ spec:
                   ports:
                       - containerPort: 8080
                   env:
-                      - name: AWS_ACCESS_KEY_ID
-                        value: "test"
-                      - name: AWS_SECRET_ACCESS_KEY
-                        value: "test"
-                      - name: AWS_REGION
-                        value: "us-east-1"
-                      - name: S3_BUCKET_NAME
-                        value: "app-data-bucket"
-                      - name: AWS_ENDPOINT
-                        value: "http://localstack:4566"
-                        # Pull from Secret
+                      # Credentials pulled from Secret
                       - name: AWS_ACCESS_KEY_ID
                         valueFrom:
                             secretKeyRef:
@@ -41,19 +31,21 @@ spec:
                                 name: aws-credentials
                                 key: AWS_SECRET_ACCESS_KEY
 
-                      # Pull from ConfigMap
-                      - name: S3_BUCKET_NAME
-                        valueFrom:
-                            configMapKeyRef:
-                                name: backend-config
-                                key: S3_BUCKET_NAME
+                      # Configuration pulled from ConfigMap
                       - name: AWS_REGION
                         valueFrom:
                             configMapKeyRef:
                                 name: backend-config
                                 key: AWS_REGION
+                      - name: S3_BUCKET_NAME
+                        valueFrom:
+                            configMapKeyRef:
+                                name: backend-config
+                                key: S3_BUCKET_NAME
                       - name: S3_ENDPOINT
                         valueFrom:
                             configMapKeyRef:
                                 name: backend-config
                                 key: S3_ENDPOINT
+                      - name: AWS_ENDPOINT
+                        value: "http://localstack:4566"
